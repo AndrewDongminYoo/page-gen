@@ -9,7 +9,7 @@ disable-model-invocation: true
 1. Make sure the working tree is committed (`git status`), so the prune is reviewable and reversible.
 2. Dry run and show the user the list:
    ```bash
-   pnpm prune
+   pnpm prune:dry-run
    ```
    Check the list for anything loaded dynamically (computed `import()` paths, components referenced only from MDX/CMS content). If something must stay, add its file to `entry` in `knip.json` and re-run.
 3. After the user confirms:

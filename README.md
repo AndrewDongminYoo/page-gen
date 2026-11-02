@@ -34,7 +34,7 @@ The app scaffold comes from shadcn's `templates/next-app`; the components track 
 pnpm dev
 pnpm check                     # typecheck + design-lint + eslint
 pnpm shot / /pricing           # screenshots + layout checks into .screenshots/
-pnpm prune                     # dry run: what knip would remove
+pnpm prune:dry-run             # what knip would remove (plain `pnpm prune` is pnpm's own command)
 pnpm prune:apply               # remove unused components/deps, then typecheck, lint, build
 node scripts/prune.mjs --apply --out ../client-app   # + export without the harness, .git or .env*
 ```

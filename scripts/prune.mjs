@@ -109,7 +109,7 @@ cpSync(".", out, {
 
 const pkgPath = join(out, "package.json")
 const pkg = JSON.parse(readFileSync(pkgPath, "utf8"))
-for (const k of ["lint:design", "shot", "prune", "prune:apply"])
+for (const k of ["lint:design", "prune:apply", "prune:dry-run", "shot"])
   delete pkg.scripts?.[k]
 pkg.scripts.check = "pnpm typecheck && pnpm lint"
 for (const dep of ["knip", "@playwright/test"])

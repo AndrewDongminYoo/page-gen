@@ -14,8 +14,8 @@
     "lint:design": "node scripts/design-lint.mjs",
     "check": "pnpm typecheck && pnpm lint:design && pnpm lint",
     "shot": "node scripts/screenshot.mjs",
-    "prune": "node scripts/prune.mjs",
-    "prune:apply": "node scripts/prune.mjs --apply"
+    "prune:apply": "node scripts/prune.mjs --apply",
+    "prune:dry-run": "node scripts/prune.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",
