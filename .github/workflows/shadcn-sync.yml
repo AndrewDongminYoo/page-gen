@@ -1,0 +1,98 @@
+name: shadcn sync
+
+# Weekly: copy the shadcn/ui registry source into components/ui and hooks with
+# scripts/sync-shadcn.mjs, verify it, and open or update one pull request.
+# Dependabot owns npm versions; this workflow owns the vendored component source.
+on:
+  schedule:
+    - cron: 0 0 * * 1 # Monday 09:00 Asia/Seoul
+  workflow_dispatch:
+    inputs:
+      # The input picks the upstream source to copy, not a build parameter; only
+      # writers can dispatch, and the fetch step passes it after --end-of-options.
+      # trunk-ignore(checkov/CKV_GHA_7)
+      upstream-ref:
+        description: shadcn-ui/ui branch or full commit SHA. An older SHA exercises the pull request steps.
+        default: main
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: shadcn-sync
+
+jobs:
+  sync:
+    # Repositories created from this template skip it: after /ship their
+    # components/ui holds only what the project uses.
+    if: github.repository == 'AndrewDongminYoo/page-gen'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      BRANCH: chore/shadcn-sync
+      UPSTREAM_REF: ${{ inputs.upstream-ref || 'main' }}
+    steps:
+      # No token in .git/config while dependencies install and build;
+      # the push step passes the token explicitly.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Fetch the shadcn/ui registry source
+        run: |
+          dir="$RUNNER_TEMP/shadcn"
+          git init -q "$dir"
+          git -C "$dir" remote add origin https://github.com/shadcn-ui/ui.git
+          git -C "$dir" sparse-checkout set apps/v4/registry/new-york-v4/ui apps/v4/registry/new-york-v4/hooks
+          git -C "$dir" fetch -q --depth 1 --filter=blob:none --end-of-options origin "$UPSTREAM_REF"
+          git -C "$dir" checkout -q FETCH_HEAD
+      - name: Sync
+        id: sync
+        run: |
+          node scripts/sync-shadcn.mjs "$RUNNER_TEMP/shadcn/apps/v4/registry/new-york-v4" > "$RUNNER_TEMP/report.md"
+          cat "$RUNNER_TEMP/report.md" >> "$GITHUB_STEP_SUMMARY"
+          if [ -n "$(git status --porcelain)" ]; then echo "changed=true" >> "$GITHUB_OUTPUT"; fi
+      # A pull request opened with github.token starts no workflow, so CI's
+      # checks run here and their outcome goes into the pull request body.
+      - name: Verify
+        id: verify
+        if: steps.sync.outputs.changed == 'true'
+        continue-on-error: true
+        run: pnpm check && pnpm build
+      - name: Open or update the pull request
+        if: steps.sync.outputs.changed == 'true'
+        env:
+          # Optional PAT: with it, the pull request also runs ci.yml.
+          GH_TOKEN: ${{ secrets.SHADCN_SYNC_TOKEN || github.token }}
+          HAS_PAT: ${{ secrets.SHADCN_SYNC_TOKEN != '' }}
+          VERIFY: ${{ steps.verify.outcome }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -q -c "$BRANCH"
+          git add -A components/ui hooks
+          git commit -q -m "chore(ui): sync shadcn/ui registry"
+          git push -q --force "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "HEAD:refs/heads/$BRANCH"
+          {
+            cat "$RUNNER_TEMP/report.md"
+            echo
+            echo "\`pnpm check && pnpm build\` in the sync job: **$VERIFY**."
+            if [ "$HAS_PAT" != "true" ]; then
+              echo
+              echo "Opened with github.token, so CI does not start on its own: close and reopen this pull request to run it."
+            fi
+          } > "$RUNNER_TEMP/body.md"
+          if gh pr view "$BRANCH" --json state --jq .state | grep -qx OPEN; then
+            gh pr edit "$BRANCH" --body-file "$RUNNER_TEMP/body.md"
+          else
+            gh pr create --base main --head "$BRANCH" --title "chore(ui): sync shadcn/ui registry" --body-file "$RUNNER_TEMP/body.md"
+          fi
+      - name: Fail when the synced code does not pass
+        if: steps.verify.outcome == 'failure'
+        run: exit 1

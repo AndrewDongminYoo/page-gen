@@ -1,0 +1,65 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      # Quoted on purpose: YAML 1.1 (Dependabot's parser) reads a bare 09:00
+      # as the base-60 integer 540.
+      time: "09:00" # yamllint disable-line rule:quoted-strings
+      timezone: Asia/Seoul
+    open-pull-requests-limit: 5
+    # No cooldown entry: pnpm 12 refuses versions younger than one day
+    # (minimumReleaseAge default), and Dependabot's default cooldown of three
+    # days already clears it. Security updates skip cooldown and can hit it.
+    #
+    # Production majors are not blocked: tracking the v0 stack is this
+    # template's purpose, so a major arrives as its own pull request and CI
+    # (check, build, render smoke test) decides it.
+    #
+    # The first matching group owns a dependency, so coupled groups come first.
+    groups:
+      # Released in lockstep; majors included so they never split.
+      nextjs:
+        patterns:
+          - eslint-config-next
+          - next
+      react:
+        patterns:
+          - "@types/react"
+          - "@types/react-dom"
+          - react
+          - react-dom
+      tailwind:
+        patterns:
+          - "@tailwindcss/*"
+          - tailwindcss
+      # What the shadcn components import (lucide-react, radix-ui, recharts, ...).
+      ui-libraries:
+        dependency-type: production
+        patterns:
+          - "*"
+        update-types:
+          - minor
+          - patch
+      dev-tooling:
+        dependency-type: development
+        patterns:
+          - "*"
+        update-types:
+          - minor
+          - patch
+
+  # Also the watcher for the SHA pins in .github/workflows.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "09:00" # yamllint disable-line rule:quoted-strings
+      timezone: Asia/Seoul
+    groups:
+      github-actions:
+        patterns:
+          - "*"
