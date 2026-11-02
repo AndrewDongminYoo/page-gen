@@ -18,7 +18,7 @@ disable-model-invocation: true
    # or
    node scripts/prune.mjs --apply --out ../<client-project-name>
    ```
-   `--out` copies the pruned app without `.claude/`, `CLAUDE.md`, `AGENTS.md`, `design/`, `scripts/`, `knip.json`, removes harness scripts and dev dependencies from `package.json`, reinstalls and builds it.
+   `--out` copies the pruned app without the paths listed in `HARNESS` in `scripts/prune.mjs` (and any `.env*` file), removes harness scripts and dev dependencies from `package.json`, reinstalls and builds it.
 4. Report: components kept, dependencies removed, build result, and any `placeholder-image` warnings from design-lint — those are assets the client must supply.
 
 Never prune mid-development: the full component set is what lets later edits stay on-system.

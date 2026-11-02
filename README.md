@@ -13,7 +13,7 @@ pnpm exec playwright install chromium   # or set CHROME_PATH to a local Chrome
 claude                                   # then describe the screen you want
 ```
 
-Snapshot: shadcn `new-york-v4` registry and `templates/next-app` from `shadcn-ui/ui@c0d63c3` (2026-11-01), Next 16.4.3, React 19.3.1.
+The app scaffold comes from shadcn's `templates/next-app`; the components track the `new-york-v4` registry, and `components/ui/.upstream` records the synced upstream commit.
 
 ## How a request flows
 
@@ -41,7 +41,21 @@ node scripts/prune.mjs --apply --out ../client-app   # + export without the harn
 
 ## Updating components
 
-Primitives in `components/ui/` are kept identical to upstream (eslint skips them for that reason). To refresh, re-run `npx shadcn@latest add --all --overwrite` in the template repo, review the diff, and commit. Customize through tokens and `className`, not by editing primitives, so updates stay mechanical.
+Primitives in `components/ui/` are kept identical to the upstream registry source (eslint skips them for that reason), with one rewrite: upstream imports `cn` from the `cn` package, the template from `@/lib/utils`. Customize through tokens and `className`, not by editing primitives, so updates stay mechanical.
+
+The `shadcn sync` workflow refreshes them every Monday and opens one pull request; run it by hand from the Actions tab. Locally, against a checkout of `shadcn-ui/ui`:
+
+```bash
+node scripts/sync-shadcn.mjs ../ui/apps/v4/registry/new-york-v4
+```
+
+Do not use `npx shadcn@latest add --all --overwrite` for this: it adds the `cn` package, pins dependency versions Dependabot already moved, and writes color values into `app/globals.css`.
+
+## CI and dependency updates
+
+- `ci.yml` runs on every pull request, Dependabot's included: `pnpm check`, `pnpm build`, and `pnpm shot /` against the production build. Screenshots are uploaded as an artifact.
+- Dependabot opens weekly grouped pull requests for npm and GitHub Actions; `.github/dependabot.yml` explains the groups.
+- In a repository created from this template, CI and Dependabot run as they are, and the sync workflow skips itself. `--out` exports leave `.github/` out.
 
 ## Caveats
 
