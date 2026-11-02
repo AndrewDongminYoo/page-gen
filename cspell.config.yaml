@@ -1,0 +1,15 @@
+version: "0.2"
+ignorePaths:
+  - public/*.svg
+  - pnpm-lock.yaml
+  - pnpm-workspace.yaml
+dictionaryDefinitions:
+  - name: custom-dictionary
+    path: ./.cspell/custom-dictionary.txt
+    addWords: true
+dictionaries:
+  - custom-dictionary
+  - fonts
+words: []
+ignoreWords: []
+import: []

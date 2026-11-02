@@ -7,7 +7,7 @@
       "Bash(pnpm typecheck)",
       "Bash(pnpm lint:*)",
       "Bash(pnpm shot:*)",
-      "Bash(pnpm prune)",
+      "Bash(pnpm prune:dry-run)",
       "Bash(pnpm exec knip:*)",
       "Bash(node scripts/design-lint.mjs:*)",
       "Bash(node scripts/screenshot.mjs:*)",

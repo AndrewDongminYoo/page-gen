@@ -1,0 +1,7 @@
+# Custom Dictionary Words
+cmdk
+knip
+lucide
+nums
+oklch
+shadcn
