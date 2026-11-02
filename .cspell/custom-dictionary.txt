@@ -6,5 +6,6 @@ knip
 lucide
 nums
 oklch
+Pretendard
 shadcn
 trunkio
