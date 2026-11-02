@@ -81,16 +81,21 @@ if (existsSync(out)) {
 // could restore them with one `git checkout .`.
 // .github goes too: ci.yml runs `pnpm shot` and shadcn-sync.yml runs a script,
 // and both are removed from the export.
+// .agents and skills-lock.json come from the skills CLI (`npx skills add`), and
+// CONTRIBUTING.md is about maintaining the template, not the client's app.
 const HARNESS = [
+  ".agents",
   ".claude",
   ".git",
   ".github",
   ".mcp.json",
   "CLAUDE.md",
   "AGENTS.md",
+  "CONTRIBUTING.md",
   "design",
   ".screenshots",
   "scripts",
+  "skills-lock.json",
   "knip.json",
   "node_modules",
   ".next",
