@@ -68,6 +68,7 @@ Things to know while prompting:
 | ------------------------------ | -------------------------------------------------------- | ----------------------------------------------------------------------------------- |
 | Project instructions           | `CLAUDE.md` (imports `AGENTS.md`)                        | Fixed stack, workflow, hard no's. `next dev` rewrites the `AGENTS.md` block         |
 | `build-ui` skill               | `.claude/skills/build-ui/`                               | The process: brief → tokens → build → screenshots → review                          |
+| `art-direction` skill          | `.claude/skills/art-direction/` (+ `references/`)        | The direction: hard gates, visual axes, style presets, dated AI-tell registry       |
 | `ui-design` skill              | `.claude/skills/ui-design/` (+ `references/`)            | The rules: color, type, spacing, states, accessibility, copy; review checklist      |
 | `ship` skill                   | `.claude/skills/ship/`                                   | Prune with knip, re-verify, build, optional clean export                            |
 | `design-reviewer` subagent     | `.claude/agents/design-reviewer.md`                      | Renders routes and returns a prioritized fix list, judged against the brief         |
