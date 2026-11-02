@@ -12,7 +12,7 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
-    // Vendored shadcn/ui sources: kept byte-identical to upstream, linted there.
+    // Vendored shadcn/ui sources: synced from upstream by scripts/sync-shadcn.mjs, linted there.
     "components/ui/**",
     "hooks/use-mobile.ts",
   ]),

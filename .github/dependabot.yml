@@ -5,8 +5,8 @@ updates:
     schedule:
       interval: weekly
       day: monday
-      # Quoted on purpose: YAML 1.1 (Dependabot's parser) reads a bare 09:00
-      # as the base-60 integer 540.
+      # Quoted on purpose: YAML 1.1 (Ruby's parser) reads a bare 09:00 as a
+      # base-60 integer, not a time.
       time: "09:00" # yamllint disable-line rule:quoted-strings
       timezone: Asia/Seoul
     open-pull-requests-limit: 5
