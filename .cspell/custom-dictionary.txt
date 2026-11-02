@@ -1,11 +1,17 @@
 # Custom Dictionary Words
 anthropics
+antidesign
+bento
 cmdk
 Dongmin
+glassmorphism
 knip
 lucide
+maximalism
 nums
 oklch
 Pretendard
 shadcn
+signifiers
+tasteskill
 trunkio
