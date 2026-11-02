@@ -1,0 +1,11 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "entry": ["scripts/**/*.mjs"],
+  "project": ["**/*.{ts,tsx,mjs}"],
+  "ignore": [".claude/**", "design/**"],
+  "ignoreDependencies": [
+    "tw-animate-css",
+    "tailwindcss",
+    "@tailwindcss/postcss"
+  ]
+}
