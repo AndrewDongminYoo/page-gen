@@ -17,7 +17,10 @@ Write it before any component code. Keep it under a page. If the request is vagu
 Audience & goal: <who, what they must accomplish here>
 Tone: <3 adjectives>; reference feel: <e.g. "Linear-like density" / "editorial, airy">
 Brand hue: <name + oklch> — why it fits the domain
-Type: <Geist Sans | + display family> ; scale used: <list>
+Type: UI <Geist Sans | Hangul font> ; display <family> — why it fits this subject ; scale used: <list>
+Subject inventory: <8–12 concrete things from the product itself: real screens, strings, objects, numbers>
+Idea: <one sentence: "on this page, [a thing from the inventory] becomes [the visual device]">
+Living element: <the one thing that moves or responds, and why it belongs to this subject>
 Layout: <container, grid, breakpoints behaviour>
 Sections / regions:
 
@@ -29,6 +32,8 @@ Sections / regions:
 ```
 
 If the user attached a screenshot or URL, the brief describes what you observed (layout, palette, type, density) and the build matches it closely.
+
+Build the subject inventory from the product, not from the request text: read its code, strings and screens when they are reachable. The idea sentence and the living element come from that inventory. They are what separates a designed page from a generated one; removing tells alone does not.
 
 ## 2. Tokens
 
