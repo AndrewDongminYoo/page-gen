@@ -99,7 +99,7 @@ jobs:
             echo "The sync rebuilds this branch from main every Monday until someone else pushes a commit to it; after that it leaves the branch alone until this pull request closes."
             if [ "$HAS_PAT" != "true" ]; then
               echo
-              echo "Opened with github.token, so CI does not start on its own: close and reopen this pull request to run it."
+              echo "Opened with github.token, so CI runs no jobs here: GitHub records an empty, failed CI run instead. Close and reopen this pull request to run CI."
             fi
           } > "$RUNNER_TEMP/body.md"
           if [ "$open" = OPEN ]; then
