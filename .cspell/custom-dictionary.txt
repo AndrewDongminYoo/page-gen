@@ -1,7 +1,10 @@
 # Custom Dictionary Words
+anthropics
 cmdk
+Dongmin
 knip
 lucide
 nums
 oklch
 shadcn
+trunkio
