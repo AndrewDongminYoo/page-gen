@@ -44,6 +44,7 @@ node scripts/prune.mjs --apply --out ../client-app   # + export without the harn
 Primitives in `components/ui/` are the upstream registry source with two mechanical changes (eslint skips them for that reason): the `cn` import points at `@/lib/utils` instead of the `cn` package, and the files are formatted with the repo's prettier config, which sorts Tailwind classes. Customize through tokens and `className`, not by editing primitives, so updates stay mechanical.
 
 The `shadcn sync` workflow refreshes them every Monday and opens one pull request; run it by hand from the Actions tab.
+It refuses an upstream commit older than the one recorded in `components/ui/.upstream`, since syncing it would roll the components back; the `allow-older` input overrides that for a test run.
 It needs one of two repository settings to open that pull request: **Settings → Actions → General → Allow GitHub Actions to create and approve pull requests**, or a fine-grained token with Contents and Pull requests write access saved as the `SHADCN_SYNC_TOKEN` secret.
 With the token, the pull request also runs CI; without it, GitHub records an empty, failed CI run, so close and reopen the pull request to start CI.
 Locally, against a checkout of `shadcn-ui/ui`:

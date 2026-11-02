@@ -12,8 +12,13 @@ on:
       # writers can dispatch, and the fetch step passes it after --end-of-options.
       # trunk-ignore(checkov/CKV_GHA_7)
       upstream-ref:
-        description: shadcn-ui/ui branch or full commit SHA. An older SHA exercises the pull request steps.
+        description: shadcn-ui/ui branch or full commit SHA.
         default: main
+      # trunk-ignore(checkov/CKV_GHA_7)
+      allow-older:
+        description: Sync a commit older than components/ui/.upstream (a rollback; for testing the pull request steps only).
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -32,6 +37,7 @@ jobs:
     env:
       BRANCH: chore/shadcn-sync
       UPSTREAM_REF: ${{ inputs.upstream-ref || 'main' }}
+      ALLOW_OLDER: ${{ inputs.allow-older || false }}
     steps:
       # No token in .git/config while dependencies install and build;
       # the push step passes the token explicitly.
@@ -55,7 +61,9 @@ jobs:
       - name: Sync
         id: sync
         run: |
-          node scripts/sync-shadcn.mjs "$RUNNER_TEMP/shadcn/apps/v4/registry/new-york-v4" > "$RUNNER_TEMP/report.md"
+          flags=()
+          if [ "$ALLOW_OLDER" = true ]; then flags+=(--allow-older); fi
+          node scripts/sync-shadcn.mjs "${flags[@]}" "$RUNNER_TEMP/shadcn/apps/v4/registry/new-york-v4" > "$RUNNER_TEMP/report.md"
           cat "$RUNNER_TEMP/report.md" >> "$GITHUB_STEP_SUMMARY"
           if [ -n "$(git status --porcelain)" ]; then echo "changed=true" >> "$GITHUB_OUTPUT"; fi
       # A pull request opened with github.token starts no workflow, so CI's
