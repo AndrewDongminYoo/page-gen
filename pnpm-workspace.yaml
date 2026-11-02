@@ -1,0 +1,6 @@
+minimumReleaseAgeExclude:
+  - "@hookform/resolvers@7.0.1"
+  - react-resizable-panels@4.16.1
+
+overrides:
+  minimatch@>=10 <11.0.1: ^11.0.1 # GHSA-g3hv-75wg-m249; the 3.x copy stays (no 3.x fix, and 11 is not callable the 3.x way), see osv-scanner.toml
