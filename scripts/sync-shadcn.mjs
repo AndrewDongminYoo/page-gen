@@ -1,9 +1,11 @@
 #!/usr/bin/env node
 // Sync components/ui/* and hooks/* from the shadcn/ui registry source.
 //
-// Usage: node scripts/sync-shadcn.mjs <registry-dir>
+// Usage: node scripts/sync-shadcn.mjs [--allow-older] <registry-dir>
 //   <registry-dir> is apps/v4/registry/new-york-v4 inside a checkout of
 //   https://github.com/shadcn-ui/ui (a sparse, shallow clone is enough).
+//   A commit older than the one in components/ui/.upstream is refused, because
+//   syncing it rolls the components back; --allow-older permits it for a test.
 //
 // Why not `shadcn add --all --overwrite`: the CLI keeps the registry's
 // `import { cn } from "cn"` and adds the `cn` package, pins dependency versions
@@ -24,10 +26,33 @@ import {
 } from "node:fs"
 import { join, resolve } from "node:path"
 
-const registry = resolve(process.argv[2] ?? "")
-if (!process.argv[2] || !existsSync(join(registry, "ui"))) {
+const args = process.argv.slice(2)
+const allowOlder = args.includes("--allow-older")
+const registryArg = args.find((a) => !a.startsWith("--"))
+const registry = resolve(registryArg ?? "")
+if (!registryArg || !existsSync(join(registry, "ui"))) {
   console.error(
-    "Usage: node scripts/sync-shadcn.mjs <shadcn-ui/ui>/apps/v4/registry/new-york-v4"
+    "Usage: node scripts/sync-shadcn.mjs [--allow-older] <shadcn-ui/ui>/apps/v4/registry/new-york-v4"
+  )
+  process.exit(1)
+}
+
+// "<sha> <ISO 8601 committer date>": the full timestamp, because the
+// committer's own day (%cs) can fall on either side of a UTC day boundary.
+const commit = execFileSync(
+  "git",
+  ["-C", registry, "log", "-1", "--format=%H %cI"],
+  { encoding: "utf8" }
+).trim()
+const RECORD = "components/ui/.upstream"
+const recorded = existsSync(RECORD)
+  ? readFileSync(RECORD, "utf8").match(/@([0-9a-f]{40}) (\S+)/)
+  : null
+const older =
+  recorded !== null && new Date(commit.split(" ")[1]) < new Date(recorded[2])
+if (older && !allowOlder) {
+  console.error(
+    `Refusing to sync shadcn-ui/ui@${commit}: it is older than the recorded ${recorded[1]} (${recorded[2]}) and would roll the components back. Pass --allow-older to do it anyway.`
   )
   process.exit(1)
 }
@@ -103,20 +128,11 @@ const missing = [
   .filter((p) => !declared.has(p))
   .sort()
 
-const commit = execFileSync(
-  "git",
-  ["-C", registry, "log", "-1", "--format=%H %cs"],
-  { encoding: "utf8" }
-).trim()
-
 // Record the upstream commit only when a file changed, so an upstream commit
 // that touches nothing here does not open a pull request on its own.
 const touched = added.length + changed.length + removed.length
 if (touched) {
-  writeFileSync(
-    "components/ui/.upstream",
-    `shadcn-ui/ui@${commit} apps/v4/registry/new-york-v4\n`
-  )
+  writeFileSync(RECORD, `shadcn-ui/ui@${commit} apps/v4/registry/new-york-v4\n`)
 }
 
 const list = (title, items) =>
@@ -127,4 +143,4 @@ const list = (title, items) =>
 console.log(`## shadcn/ui sync
 
 Upstream: \`shadcn-ui/ui@${commit}\`, ${touched} file(s) changed.
-${list("Added", added)}${list("Changed", changed)}${list("Removed (no longer in the registry)", removed)}${list("Missing npm dependencies (add them with `pnpm add`)", missing)}${list("Unmapped registry imports (extend IMPORT_MAP)", unmapped)}`)
+${older ? `\n> [!WARNING]\n> This commit is older than the recorded \`${recorded[1]}\`: merging rolls the components back. Synced with --allow-older.\n` : ""}${list("Added", added)}${list("Changed", changed)}${list("Removed (no longer in the registry)", removed)}${list("Missing npm dependencies (add them with `pnpm add`)", missing)}${list("Unmapped registry imports (extend IMPORT_MAP)", unmapped)}`)
