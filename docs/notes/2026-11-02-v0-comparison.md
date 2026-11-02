@@ -48,6 +48,12 @@ The rules themselves live in the skills; this list records which observation eac
 
 The checklist (`ui-design/references/checklist.md`) gained the matching first-impression and dark-mode lines.
 
+### Reconciliation, later on 2026-11-02
+
+The eyebrow half of the section-title row is withdrawn; the shipped `ui-design` §Copy is the authority.
+Research into published taste rules done after this run found the eyebrow above a heading flagged as an AI tell by [Impeccable's craft floor](https://github.com/pbakaus/impeccable/blob/e89e3ad/.claude/skills/impeccable/reference/craft-floor.md), [tasteskill v2](https://github.com/Leonxlnx/taste-skill/blob/12af471/skills/taste-skill/SKILL.md) and [Anthropic's frontend-design](https://github.com/anthropics/skills/blob/main/skills/frontend-design/SKILL.md), so labels now stay in the nav and the section `id`.
+The same pass replaced icon feature tiles with product crops, limited entrance animation to the hero, made the landing display face a brief decision, and added a subject inventory, an idea sentence and a living element to the brief, because [tasteskill v2's own blind test](https://github.com/Leonxlnx/taste-skill/blob/12af471/skills/taste-skill/references/research.md) (section 11) scored substance, not removed tells.
+
 ## Appendix: the prompt
 
 ```plaintext
@@ -100,4 +106,4 @@ The checklist (`ui-design/references/checklist.md`) gained the matching first-im
 - 실제로 확인되지 않은 수치(사용자 수, 평점, 집중 시간 증가율)는 넣지 마세요.
 ```
 
-<!-- cspell:ignore donminzzi -->
+<!-- cspell:ignore donminzzi tasteskill -->

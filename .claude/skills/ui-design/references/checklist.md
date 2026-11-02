@@ -8,7 +8,10 @@ Judge from `.screenshots/*.png`, all four variants (desktop/mobile × light/dark
 - [ ] One clear focal point; the eye doesn't bounce between equal-weight elements.
 - [ ] It doesn't look like a template: no default blue, no purple gradient, no row of three identical cards as the main idea.
 - [ ] On a landing page, the hero headline is the largest element after the product visual.
-- [ ] Section titles say something to the reader; none is only a label such as "Features".
+- [ ] Section titles say something to the reader; none is only a label such as "Features", and no small label or eyebrow sits above them.
+- [ ] Features are shown with the product (real components or screen crops), not a row of icon tiles.
+- [ ] Only the hero animates in; no section fades or slides in as you scroll.
+- [ ] The page carries the brief's idea sentence: one dominant visual that comes from the product's own subject.
 - [ ] No two adjacent sections repeat the same mockup or device at the same size.
 
 ## Hierarchy and type

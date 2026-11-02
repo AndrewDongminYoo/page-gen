@@ -19,7 +19,8 @@ The goal is UI that looks deliberately designed rather than generated. Generated
 
 ## Typography
 
-- At most two families: Geist Sans (default) and optionally one display family for headings, loaded via `next/font` and exposed as a CSS variable. Geist Mono only for code, numbers in tables, or keyboard hints.
+- At most two families: Geist Sans for UI text, and one display family for headings, loaded via `next/font` and exposed as a CSS variable. Geist Mono only for code, numbers in tables, or keyboard hints.
+- A landing page's hero and section titles use a display family chosen for this subject, with the reason in one line of the brief. Do not reach for the family you would use anywhere: Geist, Inter and Space Grotesk read as AI defaults, and the fonts that read that way change within a year, so choose from the subject rather than from a list. For a Korean-first product this is also the Hangul font decision.
 - Scale (use these, not arbitrary sizes): `text-xs` meta, `text-sm` UI and dense content, `text-base` body, `text-lg` lead, `text-xl`/`text-2xl` section titles, `text-3xl`–`text-5xl` page/hero titles (`text-6xl`+ only for a deliberate hero). A landing-page hero is that deliberate case: break the headline into two lines on purpose and size it so it is the largest element after the product visual.
 - Headings: `font-semibold` or `font-medium`, `tracking-tight` at `text-2xl` and up, `text-balance`. Body: `text-pretty`, `leading-relaxed` for long text, max width `max-w-prose` (~65ch).
 - Hierarchy comes from size + weight + color together. Don't bold everything; don't use more than three weights on a page.
@@ -50,19 +51,20 @@ Check `references/components.md` for the full map. The most common mistakes:
 
 ## Icons and imagery
 
-- `lucide-react`, sized `size-4` inline with text, `size-5` standalone, `size-6`–`size-8` in feature tiles; stroke width default. Icons support meaning; every icon-only button needs `aria-label` or `sr-only` text.
+- `lucide-react`, sized `size-4` inline with text, `size-5` standalone; stroke width default. Icons support meaning; every icon-only button needs `aria-label` or `sr-only` text.
+- A feature section is not a row of icon tiles. Show the product instead: the real component, or a crop of a real screen captured with `pnpm shot`. Icon-topped feature cards are among the strongest AI-generated tells.
 - Images: `next/image` with real `alt`. If no asset exists, use `/placeholder.svg?width=W&height=H&text=label` (served by this repo) and keep it obviously a placeholder; it is flagged at delivery.
 - No stock-photo clichés described in alt text, no emoji as decoration.
 
 ## States and interaction
 
-Every interactive element needs default, hover, `focus-visible`, active, and disabled styles — shadcn primitives already have them; custom elements must match. Every data view needs loading, empty, error, and populated states, and the brief lists them. Motion: `transition-colors` / `transition-opacity`, 150–200ms; `tw-animate-css` classes (`animate-in fade-in slide-in-from-bottom-2`) for entrances; respect `motion-reduce:`. No bouncing, no parallax, no animation on scroll by default.
+Every interactive element needs default, hover, `focus-visible`, active, and disabled styles — shadcn primitives already have them; custom elements must match. Every data view needs loading, empty, error, and populated states, and the brief lists them. Motion: `transition-colors` / `transition-opacity`, 150–200ms; `tw-animate-css` classes (`animate-in fade-in slide-in-from-bottom-2`) for entrances, at most one per page (the hero); sections below it do not animate in, on mount or on scroll. Respect `motion-reduce:`. No bouncing, no parallax.
 
 ## Copy
 
 Write realistic, specific copy in the user's language (Korean if the request is in Korean). Real-looking names, numbers, dates and product terms. Buttons say what happens ("초대 보내기", "Export CSV"), not "Submit" / "Click here". No lorem ipsum, no "Welcome to our amazing platform".
 
-On a landing page, each section gets a one-line title that says something to the reader ("집중의 시작은, 간단하게."); the plain label ("기능", "How it works") becomes a small eyebrow above it and can match the nav anchor.
+On a landing page, each section gets a one-line title that says something to the reader ("집중의 시작은, 간단하게."). The plain label ("기능", "How it works") stays in the nav and the section `id`; do not put a small label, kicker or eyebrow above the title, since that pattern is one of the most common AI-generated tells. Number steps only when the order is real (a three-step setup).
 
 When the request leaves a contact address or an outbound link blank, do not invent one. Reuse a value the user already publishes elsewhere only when you can name where it comes from, and list it under decisions to confirm in the hand-off summary; otherwise render a visible "준비 중" (coming soon) state.
 
