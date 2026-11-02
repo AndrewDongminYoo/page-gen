@@ -21,7 +21,7 @@ import {
   rmSync,
   writeFileSync,
 } from "node:fs"
-import { join, resolve } from "node:path"
+import { basename, join, resolve } from "node:path"
 
 const args = process.argv.slice(2)
 const apply = args.includes("--apply")
@@ -77,8 +77,11 @@ if (existsSync(out)) {
   console.error(`\n${out} already exists. Choose another --out path.`)
   process.exit(1)
 }
+// .git goes too: its history still holds every harness file, so a client
+// could restore them with one `git checkout .`.
 const HARNESS = [
   ".claude",
+  ".git",
   ".mcp.json",
   "CLAUDE.md",
   "AGENTS.md",
@@ -95,6 +98,8 @@ cpSync(".", out, {
   recursive: true,
   filter: (src) => {
     const abs = resolve(src)
+    // Local secrets (.env, .env.local, …) never leave this machine.
+    if (basename(abs).startsWith(".env")) return false
     return !excluded.some((x) => abs === x || abs.startsWith(x + "/"))
   },
 })
@@ -125,8 +130,9 @@ if (stillUsed)
 else
   rmSync(join(out, "app", "placeholder.svg"), { recursive: true, force: true })
 writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + "\n")
-rmSync(join(out, "pnpm-lock.yaml"), { force: true })
 
-run("pnpm install", { cwd: out })
+// Keep the verified lockfile: pnpm only drops the removed dev dependencies
+// instead of re-resolving every range to whatever is newest today.
+run("pnpm install --no-frozen-lockfile", { cwd: out })
 run("pnpm build", { cwd: out })
 console.log(`\nExported clean project to ${out}`)
