@@ -4,10 +4,12 @@ v0-style UI generation with Claude Code, locally. A Next.js App Router + Tailwin
 
 ## Setup
 
+Create your repository with **Use this template** on GitHub, then clone it.
+GitHub copies every file on the default branch, harness included, as a single commit; there is no setting that leaves files out.
+
 ```bash
 pnpm install
 pnpm exec playwright install chromium   # or set CHROME_PATH to a local Chrome
-git init && git add -A && git commit -m "template"
 claude                                   # then describe the screen you want
 ```
 
@@ -18,7 +20,7 @@ Snapshot: shadcn `new-york-v4` registry and `templates/next-app` from `shadcn-ui
 | Step                                                                                | What enforces it                                                               |
 | ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
 | Brief in `design/brief.md`, tokens in `app/tokens.css`                              | `CLAUDE.md`, `build-ui` skill                                                  |
-| Compose from `components/ui/*`, never rewrite them                                  | `guard-ui` PreToolUse hook blocks edits to primitives                          |
+| Compose from `components/ui/*`, never rewrite them                                  | `guard-ui` PreToolUse hook blocks Edit/Write on primitives (not shell edits)   |
 | Design rules (one brand hue, type scale, no raw palette, no inline svg/emoji/lorem) | `ui-design` skill + `scripts/design-lint.mjs` on every edit (PostToolUse hook) |
 | Type-safe, lint-clean before the turn ends                                          | Stop hook runs typecheck + design-lint                                         |
 | Visual check at 1440/390px × light/dark, overflow + console errors                  | `pnpm shot` (`scripts/screenshot.mjs`), Playwright MCP                         |
@@ -34,7 +36,7 @@ pnpm check                     # typecheck + design-lint + eslint
 pnpm shot / /pricing           # screenshots + layout checks into .screenshots/
 pnpm prune                     # dry run: what knip would remove
 pnpm prune:apply               # remove unused components/deps, then typecheck, lint, build
-node scripts/prune.mjs --apply --out ../client-app   # + export without the harness
+node scripts/prune.mjs --apply --out ../client-app   # + export without the harness, .git or .env*
 ```
 
 ## Updating components
