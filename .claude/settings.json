@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Bash(pnpm dev:*)",
+      "Bash(pnpm build)",
+      "Bash(pnpm typecheck)",
+      "Bash(pnpm lint:*)",
+      "Bash(pnpm shot:*)",
+      "Bash(pnpm prune)",
+      "Bash(pnpm exec knip:*)",
+      "Bash(node scripts/design-lint.mjs:*)",
+      "Bash(node scripts/screenshot.mjs:*)",
+      "Read(.screenshots/**)"
+    ],
+    "ask": [
+      "Bash(pnpm prune:apply*)",
+      "Bash(node scripts/prune.mjs --apply*)",
+      "Bash(pnpm add:*)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/guard-ui.mjs"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd \"$CLAUDE_PROJECT_DIR\" && node .claude/hooks/post-edit.mjs",
+            "timeout": 60
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd \"$CLAUDE_PROJECT_DIR\" && node .claude/hooks/on-stop.mjs",
+            "timeout": 120
+          }
+        ]
+      }
+    ]
+  }
+}
