@@ -79,9 +79,12 @@ if (existsSync(out)) {
 }
 // .git goes too: its history still holds every harness file, so a client
 // could restore them with one `git checkout .`.
+// .github goes too: ci.yml runs `pnpm shot` and shadcn-sync.yml runs a script,
+// and both are removed from the export.
 const HARNESS = [
   ".claude",
   ".git",
+  ".github",
   ".mcp.json",
   "CLAUDE.md",
   "AGENTS.md",
