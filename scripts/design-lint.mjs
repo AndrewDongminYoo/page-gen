@@ -38,7 +38,8 @@ const RULES = [
   {
     id: "color-literal",
     level: "error",
-    re: /(?:["'`\s(:])(#[0-9a-fA-F]{3,8}\b|rgba?\(|hsla?\(|oklch\()/g,
+    // The lookbehind skips in-page anchors such as href="#add" or href: "#faded".
+    re: /(?<!\b(?:href|to)\s*[=:]\s*\{?)(?:["'`\s(:])(#[0-9a-fA-F]{3,8}\b|rgba?\(|hsla?\(|oklch\()/g,
     msg: "Color literal in component code. Colors live in app/tokens.css only (charts: var(--chart-N)).",
   },
   {
