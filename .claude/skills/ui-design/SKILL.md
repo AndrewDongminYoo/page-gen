@@ -15,11 +15,12 @@ The goal is UI that looks deliberately designed rather than generated. Generated
 - Gradients: avoid. If used, one subtle gradient per page, within one hue family (e.g. `from-primary/10 to-transparent`). Never purple→blue, never on text, never on buttons.
 - Contrast: body text ≥ 4.5:1, large text and UI borders ≥ 3:1. `text-muted-foreground` is for secondary text only, never for anything the user must read to act.
 - Check dark mode on purpose: borders, shadows and muted text behave differently.
+- A logo or app icon whose background is close to the page background in either theme gets a hairline border or a contrasting plate, so the mark keeps its shape.
 
 ## Typography
 
 - At most two families: Geist Sans (default) and optionally one display family for headings, loaded via `next/font` and exposed as a CSS variable. Geist Mono only for code, numbers in tables, or keyboard hints.
-- Scale (use these, not arbitrary sizes): `text-xs` meta, `text-sm` UI and dense content, `text-base` body, `text-lg` lead, `text-xl`/`text-2xl` section titles, `text-3xl`–`text-5xl` page/hero titles (`text-6xl`+ only for a deliberate hero).
+- Scale (use these, not arbitrary sizes): `text-xs` meta, `text-sm` UI and dense content, `text-base` body, `text-lg` lead, `text-xl`/`text-2xl` section titles, `text-3xl`–`text-5xl` page/hero titles (`text-6xl`+ only for a deliberate hero). A landing-page hero is that deliberate case: break the headline into two lines on purpose and size it so it is the largest element after the product visual.
 - Headings: `font-semibold` or `font-medium`, `tracking-tight` at `text-2xl` and up, `text-balance`. Body: `text-pretty`, `leading-relaxed` for long text, max width `max-w-prose` (~65ch).
 - Hierarchy comes from size + weight + color together. Don't bold everything; don't use more than three weights on a page.
 - Numbers in tables/stats: `tabular-nums`.
@@ -31,7 +32,7 @@ The goal is UI that looks deliberately designed rather than generated. Generated
 - Containers: `mx-auto w-full max-w-6xl px-4 md:px-6` for marketing; full-width with sidebar for apps; `max-w-2xl` for forms and reading.
 - Mobile-first: write base classes for 390px, then `md:` / `lg:`. Nothing may overflow horizontally at 390px.
 - Alignment: left-align by default. Center only short hero copy and empty states. Long centered paragraphs read as generated.
-- Break the grid on purpose: vary section layouts (split, asymmetric 2/3+1/3, bento with one large tile, list) instead of repeating three equal cards.
+- Break the grid on purpose: vary section layouts (split, asymmetric 2/3+1/3, bento with one large tile, list) instead of repeating three equal cards or any other device. Adjacent sections must not show the same mockup at the same size; crop to the part of the screen that proves the point, or vary the frame.
 - Use `size-*` for square elements, `min-h-svh` not `h-screen`, `gap` not margins between siblings.
 
 ## Components — pick the right primitive
@@ -60,6 +61,10 @@ Every interactive element needs default, hover, `focus-visible`, active, and dis
 ## Copy
 
 Write realistic, specific copy in the user's language (Korean if the request is in Korean). Real-looking names, numbers, dates and product terms. Buttons say what happens ("초대 보내기", "Export CSV"), not "Submit" / "Click here". No lorem ipsum, no "Welcome to our amazing platform".
+
+On a landing page, each section gets a one-line title that says something to the reader ("집중의 시작은, 간단하게."); the plain label ("기능", "How it works") becomes a small eyebrow above it and can match the nav anchor.
+
+When the request leaves a contact address or an outbound link blank, do not invent one. Reuse a value the user already publishes elsewhere only when you can name where it comes from, and list it under decisions to confirm in the hand-off summary; otherwise render a visible "준비 중" (coming soon) state.
 
 ## Accessibility
 
