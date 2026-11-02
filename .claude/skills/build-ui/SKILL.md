@@ -52,6 +52,8 @@ If Playwright's Chromium isn't installed, set `CHROME_PATH` to a local Chrome bi
 
 Read each PNG the script prints (desktop/mobile × light/dark). Compare against the brief and `ui-design/references/checklist.md`. Fix, re-shoot. Stop when the script reports no FAIL and the checklist passes — usually 2–4 iterations. Use the Playwright MCP for interaction checks (open dialogs, tab focus, hover).
 
+When another tool's result for the same request exists (a v0 build, a previous version), capture it from an empty directory with `BASE_URL=<its url> node <this repo>/scripts/screenshot.mjs <routes>`, so its `.screenshots/` stays apart from yours (`pnpm shot` always runs in the repository root and would overwrite your shots), and compare both against the checklist before the review step. It is a bar to meet, not a design to copy: take what it does better, and keep your version where it is more faithful to the product.
+
 ## 5. Review
 
 For a full page or multi-component feature, spawn the `design-reviewer` subagent with the routes and the brief path. Apply its fixes, re-shoot, and finish with a short summary: what was built, decisions taken, placeholders left to replace.

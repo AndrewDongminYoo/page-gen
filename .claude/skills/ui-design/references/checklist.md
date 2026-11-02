@@ -7,6 +7,9 @@ Judge from `.screenshots/*.png`, all four variants (desktop/mobile × light/dark
 - [ ] It's obvious what the page is and what to do next.
 - [ ] One clear focal point; the eye doesn't bounce between equal-weight elements.
 - [ ] It doesn't look like a template: no default blue, no purple gradient, no row of three identical cards as the main idea.
+- [ ] On a landing page, the hero headline is the largest element after the product visual.
+- [ ] Section titles say something to the reader; none is only a label such as "Features".
+- [ ] No two adjacent sections repeat the same mockup or device at the same size.
 
 ## Hierarchy and type
 
@@ -25,6 +28,7 @@ Judge from `.screenshots/*.png`, all four variants (desktop/mobile × light/dark
 
 - [ ] Brand color used sparingly for emphasis and primary actions, not as wallpaper.
 - [ ] Dark mode: borders visible, no pure-black-on-pure-white flashes, muted text readable, charts legible.
+- [ ] The logo or app icon keeps its shape in both themes; it does not melt into a background of the same color.
 
 ## Mobile (390px)
 
