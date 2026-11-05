@@ -1,17 +1,17 @@
 # page-gen vs v0: one landing page, same prompt (2026-11-02)
 
-The question was whether the model the operator uses every day, inside this harness, reaches the visual quality of v0.
+The question was whether the model used every day, inside this harness, reaches the visual quality of v0.
 Code quality was out of scope: page-gen's code was clearly better, so the comparison judged design only.
 This note is a dated record of one run; the rule changes it motivated are listed at the end and live in `.claude/skills/` once applied.
 
 ## Setup
 
-|                   | v0                                                       | page-gen                                                                                                                            |
-| ----------------- | -------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| Input             | The prompt below, plus the app icon attached as an image | The same prompt, in `focus-study-landing` (made from this template)                                                                 |
-| Model and context | v0                                                       | Opus 5.5 in a local Claude Code session, with read access to the app's repository (`focus-study`) and the operator's global harness |
-| Icon              | Present                                                  | Absent while building (`public/icon.png` was never supplied); added to a scratch copy for the final capture                         |
-| Rounds            | First result, then one feedback round                    | One run, including the `design-reviewer` pass (10 of 11 fixes applied)                                                              |
+|                   | v0                                                       | page-gen                                                                                                                 |
+| ----------------- | -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| Input             | The prompt below, plus the app icon attached as an image | The same prompt, in `focus-study-landing` (made from this template)                                                      |
+| Model and context | v0                                                       | Opus 5.5 in a local Claude Code session, with read access to the app's repository (`focus-study`) and the global harness |
+| Icon              | Present                                                  | Absent while building (`public/icon.png` was never supplied); added to a scratch copy for the final capture              |
+| Rounds            | First result, then one feedback round                    | One run, including the `design-reviewer` pass (10 of 11 fixes applied)                                                   |
 
 Both results were built in production mode and captured with `scripts/screenshot.mjs` at 1440px and 390px, light and dark.
 v0's own preview link could not be used: it redirected to `v0.app/chat/unauthorized?reason=VM+not+found` after the preview VM stopped, so its downloaded code was installed with `--ignore-scripts` and built locally.
@@ -37,14 +37,14 @@ The gap came from three art-direction decisions (hero scale, section titles, rep
 
 The rules themselves live in the skills; this list records which observation each one answers.
 
-| Observation                                                                                                       | Changed rule                                                                                                              |
-| ----------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| The scale reserved `text-6xl`+ for "a deliberate hero", and the build stopped at a one-line medium headline       | `ui-design` §Typography: a landing hero is that deliberate case                                                           |
-| Section titles were menu labels                                                                                   | `ui-design` §Copy: section titles are copy, labels become eyebrows                                                        |
-| "Break the grid" named only cards, and four same-size phone frames passed it                                      | `ui-design` §Spacing and layout: no repeated device or mockup at the same size                                            |
-| The navy icon disappeared on the navy dark page in both results                                                   | `ui-design` §Color: brand marks keep their shape in both themes                                                           |
-| The blank contact address was filled from another repository; the operator accepted that, provided it is reported | `ui-design` §Copy: reuse only a published value with a named source, and list it for confirmation                         |
-| The local session saw v0's result only through the operator                                                       | `build-ui` §4: capture a reference result with `scripts/screenshot.mjs` and `BASE_URL`, and compare against the checklist |
+| Observation                                                                                                 | Changed rule                                                                                                              |
+| ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| The scale reserved `text-6xl`+ for "a deliberate hero", and the build stopped at a one-line medium headline | `ui-design` §Typography: a landing hero is that deliberate case                                                           |
+| Section titles were menu labels                                                                             | `ui-design` §Copy: section titles are copy, labels become eyebrows                                                        |
+| "Break the grid" named only cards, and four same-size phone frames passed it                                | `ui-design` §Spacing and layout: no repeated device or mockup at the same size                                            |
+| The navy icon disappeared on the navy dark page in both results                                             | `ui-design` §Color: brand marks keep their shape in both themes                                                           |
+| The blank contact address was filled from another repository; that was accepted, provided it is reported    | `ui-design` §Copy: reuse only a published value with a named source, and list it for confirmation                         |
+| The local session saw v0's result only through the user                                                     | `build-ui` §4: capture a reference result with `scripts/screenshot.mjs` and `BASE_URL`, and compare against the checklist |
 
 The checklist (`ui-design/references/checklist.md`) gained the matching first-impression and dark-mode lines.
 
