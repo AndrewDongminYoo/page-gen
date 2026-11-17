@@ -21,14 +21,14 @@ runtimes:
 lint:
   enabled:
     - actionlint@1.7.12
-    - eslint@10.14.0
-    - checkov@3.4.3
+    - eslint@10.15.0
+    - checkov@3.4.5
     - git-diff-check
     - markdownlint@0.50.0
-    - osv-scanner@2.7.0
-    - prettier@3.9.10
+    - osv-scanner@2.7.1
+    - prettier@3.10.1
     - trivy@0.76.2
-    - trufflehog@3.99.8
+    - trufflehog@3.99.9
     - yamllint@1.38.0
   ignore:
     - linters: [markdownlint]
